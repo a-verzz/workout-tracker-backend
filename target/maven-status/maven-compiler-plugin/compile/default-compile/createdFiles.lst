@@ -1,6 +1,0 @@
-com/example/workout/service/WorkoutService.class
-com/example/workout/controller/WorkoutController.class
-com/example/workout/repository/WorkoutRepository.class
-com/example/workout/config/WebConfig.class
-com/example/workout/model/Workout.class
-com/example/workout/WorkoutApplication.class
