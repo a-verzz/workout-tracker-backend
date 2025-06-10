@@ -1,8 +1,15 @@
 package com.example.workout.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
+import jdk.jfr.DataAmount;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
+import java.time.LocalDate;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Workout {
     @Id
@@ -13,13 +20,4 @@ public class Workout {
     private LocalDate date;
     private int duration;
     private String notes;
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
-    public int getDuration() { return duration; }
-    public void setDuration(int duration) { this.duration = duration; }
 }
