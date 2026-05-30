@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Workout {
@@ -15,6 +17,7 @@ public class Workout {
     private LocalDate date;
     private int duration;
     private int actualDuration;
+    private int actualSeconds;
     private boolean completed;
     private LocalDateTime completedAt;
     private String category;
@@ -23,119 +26,76 @@ public class Workout {
     private int calories;
     private String notes;
 
+    // Scheduling: "once", "daily", "weekdays"
+    private String repeatMode = "once";
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "workout_repeat_days", joinColumns = @JoinColumn(name = "workout_id"))
+    @Column(name = "day_value")
+    private List<Integer> repeatDays = new ArrayList<>();
+
+    // Override tracking: parentId links an override/skip record back to its master schedule row
+    private Long parentId;
+
+    // Boolean wrapper so Jackson serialises as "isOverride" (via getIsOverride getter)
+    private Boolean isOverride;
+    private boolean skipped;
+
     public Workout() {
     }
 
-    public Workout(Long id, String name, LocalDate date, int duration, int actualDuration, boolean completed,
-                   LocalDateTime completedAt, String category, String targetMuscle, String intensity, int calories,
-                   String notes) {
-        this.id = id;
-        this.name = name;
-        this.date = date;
-        this.duration = duration;
-        this.actualDuration = actualDuration;
-        this.completed = completed;
-        this.completedAt = completedAt;
-        this.category = category;
-        this.targetMuscle = targetMuscle;
-        this.intensity = intensity;
-        this.calories = calories;
-        this.notes = notes;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Long getId() {
-        return id;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public LocalDate getDate() { return date; }
+    public void setDate(LocalDate date) { this.date = date; }
 
-    public String getName() {
-        return name;
-    }
+    public int getDuration() { return duration; }
+    public void setDuration(int duration) { this.duration = duration; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public int getActualDuration() { return actualDuration; }
+    public void setActualDuration(int actualDuration) { this.actualDuration = actualDuration; }
 
-    public LocalDate getDate() {
-        return date;
-    }
+    public int getActualSeconds() { return actualSeconds; }
+    public void setActualSeconds(int actualSeconds) { this.actualSeconds = actualSeconds; }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
+    public boolean isCompleted() { return completed; }
+    public void setCompleted(boolean completed) { this.completed = completed; }
 
-    public int getDuration() {
-        return duration;
-    }
+    public LocalDateTime getCompletedAt() { return completedAt; }
+    public void setCompletedAt(LocalDateTime completedAt) { this.completedAt = completedAt; }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
 
-    public int getActualDuration() {
-        return actualDuration;
-    }
+    public String getTargetMuscle() { return targetMuscle; }
+    public void setTargetMuscle(String targetMuscle) { this.targetMuscle = targetMuscle; }
 
-    public void setActualDuration(int actualDuration) {
-        this.actualDuration = actualDuration;
-    }
+    public String getIntensity() { return intensity; }
+    public void setIntensity(String intensity) { this.intensity = intensity; }
 
-    public boolean isCompleted() {
-        return completed;
-    }
+    public int getCalories() { return calories; }
+    public void setCalories(int calories) { this.calories = calories; }
 
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
+    public String getNotes() { return notes; }
+    public void setNotes(String notes) { this.notes = notes; }
 
-    public LocalDateTime getCompletedAt() {
-        return completedAt;
-    }
+    public String getRepeatMode() { return repeatMode; }
+    public void setRepeatMode(String repeatMode) { this.repeatMode = repeatMode != null ? repeatMode : "once"; }
 
-    public void setCompletedAt(LocalDateTime completedAt) {
-        this.completedAt = completedAt;
-    }
+    public List<Integer> getRepeatDays() { return repeatDays; }
+    public void setRepeatDays(List<Integer> repeatDays) { this.repeatDays = repeatDays != null ? repeatDays : new ArrayList<>(); }
 
-    public String getCategory() {
-        return category;
-    }
+    public Long getParentId() { return parentId; }
+    public void setParentId(Long parentId) { this.parentId = parentId; }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
+    // getter name getIsOverride → Jackson JSON key "isOverride"
+    public Boolean getIsOverride() { return isOverride; }
+    public void setIsOverride(Boolean isOverride) { this.isOverride = isOverride; }
 
-    public String getTargetMuscle() {
-        return targetMuscle;
-    }
-
-    public void setTargetMuscle(String targetMuscle) {
-        this.targetMuscle = targetMuscle;
-    }
-
-    public String getIntensity() {
-        return intensity;
-    }
-
-    public void setIntensity(String intensity) {
-        this.intensity = intensity;
-    }
-
-    public int getCalories() {
-        return calories;
-    }
-
-    public void setCalories(int calories) {
-        this.calories = calories;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
+    public boolean isSkipped() { return skipped; }
+    public void setSkipped(boolean skipped) { this.skipped = skipped; }
 }

@@ -38,7 +38,8 @@ public class WorkoutController {
     @PatchMapping("/{id}/complete")
     public Workout complete(@PathVariable Long id, @RequestBody(required = false) Map<String, Integer> body) {
         int actualDuration = body != null && body.get("actualDuration") != null ? body.get("actualDuration") : 0;
-        return service.complete(id, actualDuration);
+        int actualSeconds = body != null && body.get("actualSeconds") != null ? body.get("actualSeconds") : 0;
+        return service.complete(id, actualDuration, actualSeconds);
     }
 
     @DeleteMapping("/{id}")

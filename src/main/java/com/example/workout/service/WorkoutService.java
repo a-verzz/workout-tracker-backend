@@ -36,6 +36,7 @@ public class WorkoutService {
         existing.setDate(workout.getDate());
         existing.setDuration(workout.getDuration());
         existing.setActualDuration(workout.getActualDuration());
+        existing.setActualSeconds(workout.getActualSeconds());
         existing.setCompleted(workout.isCompleted());
         existing.setCompletedAt(workout.getCompletedAt());
         existing.setCategory(workout.getCategory());
@@ -43,14 +44,20 @@ public class WorkoutService {
         existing.setIntensity(workout.getIntensity());
         existing.setCalories(workout.getCalories());
         existing.setNotes(workout.getNotes());
+        existing.setRepeatMode(workout.getRepeatMode());
+        existing.setRepeatDays(workout.getRepeatDays());
+        existing.setParentId(workout.getParentId());
+        existing.setIsOverride(workout.getIsOverride());
+        existing.setSkipped(workout.isSkipped());
         return repository.save(existing);
     }
 
-    public Workout complete(Long id, int actualDuration) {
+    public Workout complete(Long id, int actualDuration, int actualSeconds) {
         Workout existing = getById(id);
         existing.setCompleted(true);
         existing.setCompletedAt(LocalDateTime.now());
         existing.setActualDuration(actualDuration);
+        existing.setActualSeconds(actualSeconds);
         return repository.save(existing);
     }
 
